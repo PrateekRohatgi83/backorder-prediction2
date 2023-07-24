@@ -28,6 +28,7 @@ class DataValidationConfig:
         self.valid_test_file_path = os.path.join(self.valid_dir, TEST_FILE_NAME)
         self.invalid_test_file_path = os.path.join(self.invalid_dir, TEST_FILE_NAME)
         self.report_file_name = os.path.join(data_validation_dir, "report", "report.yaml") 
+        self.schema_file_path = os.path.join("schema.yaml")
         self.missing_threshold = 0.3
 
                 

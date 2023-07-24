@@ -32,14 +32,14 @@ def write_yaml_file(file_path, data:dict):
     try:
         file_dir = os.path.dirname(file_path)
         os.makedirs(file_dir, exist_ok=True)
-        with open(file_path, 'w') as file_writer:
+        with open(file_path, "w") as file_writer:
             yaml.dump(data, file_writer)
     except Exception as e:
-            raise BackorderException(e, sys)
+        raise BackorderException(e, sys)
 
 def read_yaml_file(file_path):
     try:
-        with open(file_path, 'rb') as file_reader:
-            yaml.safe_load(file_reader)
+        with open(file_path, "rb") as file_reader:
+            return yaml.safe_load(file_reader)
     except Exception as e:
-            raise BackorderException(e, sys)
+        raise BackorderException(e, sys)
