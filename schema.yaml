@@ -1,7 +1,6 @@
 required_columns:
   - sku	
   - national_inv	
-  - lead_time	
   - in_transit_qty	
   - forecast_3_month	
   - forecast_6_month	

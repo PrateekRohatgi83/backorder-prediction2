@@ -2,6 +2,9 @@ from datetime import datetime
 import os, sys   
 TRAIN_FILE_NAME = "train.csv"
 TEST_FILE_NAME = "test.csv"
+TRANSFORMER_OBJECT_FILE_NAME = "transformer.pkl"
+TARGET_ENCODER_OBJECT_FILE_NAME = "target_encoder.pkl"
+MODEL_FILE_NAME = "model.pkl"
 
 class TrainingPipelineConfig:
     def __init__(self): 
@@ -29,6 +32,11 @@ class DataValidationConfig:
         self.invalid_test_file_path = os.path.join(self.invalid_dir, TEST_FILE_NAME)
         self.report_file_name = os.path.join(data_validation_dir, "report", "report.yaml") 
         self.schema_file_path = os.path.join("schema.yaml")
-        self.missing_threshold = 0.3
+        self.missing_threshold = 0.2
 
-                
+class DataTransformationConfig:
+    def __init__(self, training_pipeline_config: TrainingPipelineConfig):
+        data_transformation_dir = os.path.join(training_pipeline_config.artifact_dir, "data_transformation")
+        self.transorm_obj_dir = os.path.join(data_transformation_dir, "transformer")      
+        self.transform_object_path = os.path.join(self.transform_obj_dir,TRANSFORMER_OBJECT_FILE_NAME)
+        self.transform_data = os.path.join(self.transform_
