@@ -12,6 +12,7 @@ class DataIngestion:
 
     def __init__(self, data_ingestion_config: DataIngestionConfig):
         try:
+            logging.info(f"{'>>'*20} Data Ingestion {'<<'*20}")
             self.data_ingestion_config = data_ingestion_config
         except Exception as e:
             raise BackorderException(e, sys)
@@ -42,7 +43,6 @@ class DataIngestion:
 
             logging.info(f"Data ingestion artifact: {data_ingestion_artifact}")
             return data_ingestion_artifact
-
 
         except Exception as e:
             raise BackorderException(e, sys)
