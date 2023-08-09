@@ -121,6 +121,9 @@ class DataValidation:
             if not is_exists:
                 raise Exception("Required columns are not available in test df")
 
+            if len(train_df.columns)!=len(test_df.columns):
+                raise Exception(f"Number of columns in train and test df are not same")
+
             self.data_drift(base_df=train_df, current_df=test_df, report_key_name="train_test_drift")
 
             write_yaml_file(file_path=self.data_validation_config.report_file_name, data=self.validation_error)

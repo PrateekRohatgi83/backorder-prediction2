@@ -40,17 +40,17 @@ class TrainingPipeline:
         except Exception as e:
             raise BackorderException(e, sys)
 
-    def start_data_transformation(self, data_validation_artifact:DataValidationArtifact)->DataValidationArtifact:
-        try:
-            data_transformation_config = DataTransformationConfig(
-                training_pipeline_config=self.training_pipeline_config)
-            data_transformation = DataTransformation(data_transformation_config=data_transformation_config, 
-            data_validation_artifact=data_validation_artifact)
+    # def start_data_transformation(self, data_validation_artifact:DataValidationArtifact)->DataValidationArtifact:
+    #     try:
+    #         data_transformation_config = DataTransformationConfig(
+    #             training_pipeline_config=self.training_pipeline_config)
+    #         data_transformation = DataTransformation(data_transformation_config=data_transformation_config, 
+    #         data_validation_artifact=data_validation_artifact)
 
-            return data_transformation.initiate_data_transformation()
+    #         return data_transformation.initiate_data_transformation()
 
-        except Exception as e:
-            raise BackorderException(e, sys)
+    #     except Exception as e:
+    #         raise BackorderException(e, sys)
         
 
     def start(self,):
@@ -60,8 +60,8 @@ class TrainingPipeline:
             data_validation_artifact = self.start_data_validation(
                 data_ingestion_artifact=data_ingestion_artifact)
                 
-            data_transformation_artifact = self.start_data_transformation(
-                data_validation_artifact=data_validation_artifact
-            )
+            # data_transformation_artifact = self.start_data_transformation(
+            #     data_validation_artifact=data_validation_artifact
+            # )
         except Exception as e:
             raise BackorderException(e, sys)

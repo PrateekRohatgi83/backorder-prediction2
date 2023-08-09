@@ -6,7 +6,7 @@ import os
 
 def storing_record_in_mongo():
     try:
-        file_path = '/config/workspace/back_order.csv'
+        file_path = '/config/workspace/backorder.csv'
         database_name = 'backorder'
         collection_name = 'back_order'
         dump_csv_file_to_mongodb_collection(file_path, database_name, collection_name)
@@ -25,3 +25,4 @@ if __name__ == '__main__':
     except Exception as e:
         logging.info(f"error: {e}")
         print(e)
+

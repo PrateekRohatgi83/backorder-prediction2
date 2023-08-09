@@ -1,4 +1,5 @@
 import sys
+
 class BackorderException(Exception):
     def __init__(self, error_message, error_detail:sys):
         super().__init__()
