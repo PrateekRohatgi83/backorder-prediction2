@@ -30,7 +30,7 @@ class DataTransformation:
             simple_imputer = SimpleImputer(strategy='constant', fill_value=0)
             robust_scaler = RobustScaler()
             pipeline = Pipeline(steps=[
-                    ('imputer', simple_imputer),
+                    ('Imputer', simple_imputer),
                     ('RobustScaler', robust_scaler)
                 ])
             return pipeline
@@ -85,7 +85,7 @@ class DataTransformation:
 
             logging.info("Saving data")
             save_numpy_array_data(file_path=self.data_transformation_config.transform_train_path, array=train_arr)
-            save_numpy_array_data(file_path=self.data_transformation_config.transform_test_path, array=test_arr)
+            save_numpy_array_data(file_path=self.data_transformation_config.transform_test_path, array=train_arr)
 
             logging.info(f"Save label encoder")
             save_object(file_path=self.data_transformation_config.target_encoder_path, obj=label_encoder)

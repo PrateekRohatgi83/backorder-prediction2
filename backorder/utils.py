@@ -1,6 +1,6 @@
 from backorder.configuration.mongo_db_connection import mongo_client
 import pandas as pd
-from .exception import BackorderException
+from backorder.exception import BackorderException
 import os, sys
 import json
 import logging
@@ -47,8 +47,7 @@ def read_yaml_file(file_path):
     except Exception as e:
         raise BackorderException(e, sys)
 
-def convert_columns_float(df:pd.DataFrame,exclude_columns:list=["potential_issue", "deck_risk", "oe_constraint", "ppap_risk", "stop_auto_buy", "rev_stop",
-                                        "went_on_backorder"])->pd.DataFrame:
+def convert_columns_float(df:pd.DataFrame,exclude_columns:list=["potential_issue","deck_risk","oe_constraint","ppap_risk","stop_auto_buy","rev_stop","went_on_backorder"])->pd.DataFrame:
     try:
         for column in df.columns:
             if column not in exclude_columns:
@@ -57,12 +56,11 @@ def convert_columns_float(df:pd.DataFrame,exclude_columns:list=["potential_issue
     except Exception as e:
         raise e
 
-def convert_string_to_float(df:pd.DataFrame, include_columns:list=["potential_issue", "deck_risk", "oe_constraint", "ppap_risk", "stop_auto_buy", "rev_stop",
-                                        "went_on_backorder"])->pd.DataFrame:
+def convert_string_to_float(df:pd.DataFrame, include_columns:list=["potential_issue","deck_risk","oe_constraint","ppap_risk","stop_auto_buy","rev_stop","went_on_backorder"])->pd.DataFrame:
     try:
         for column in df.columns:
             if column in include_columns:
-                df[column]=df[column].replace({'Yes':1, 'No':0})
+                df[column]=df[column].replace({"No",0})
         return df
     except Exception as e:
         raise e
