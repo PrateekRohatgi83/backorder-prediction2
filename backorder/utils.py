@@ -47,11 +47,22 @@ def read_yaml_file(file_path):
     except Exception as e:
         raise BackorderException(e, sys)
 
-def convert_columns_float(df:pd.DataFrame,exclude_columns:list=[])->pd.DataFrame:
+def convert_columns_float(df:pd.DataFrame,exclude_columns:list=["potential_issue", "deck_risk", "oe_constraint", "ppap_risk", "stop_auto_buy", "rev_stop",
+                                        "went_on_backorder"])->pd.DataFrame:
     try:
         for column in df.columns:
             if column not in exclude_columns:
                 df[column]=df[column].astype('float')
+        return df
+    except Exception as e:
+        raise e
+
+def convert_string_to_float(df:pd.DataFrame, include_columns:list=["potential_issue", "deck_risk", "oe_constraint", "ppap_risk", "stop_auto_buy", "rev_stop",
+                                        "went_on_backorder"])->pd.DataFrame:
+    try:
+        for column in df.columns:
+            if column in include_columns:
+                df[column]=df[column].replace({'Yes':1, 'No':0})
         return df
     except Exception as e:
         raise e
@@ -64,7 +75,7 @@ def save_object(file_path:str, obj: object)-> None:
                 dill.dump(obj, file_obj)
         logging.info("Exited the save_object method of utils")
     except Exception as e:
-        raise BackorderException(e, sys)
+        raise BackorderException(e, sys) from e
 
 def load_object(file_path: str,) -> object:
     try:

@@ -12,7 +12,6 @@ from sklearn.preprocessing import LabelEncoder
 from imblearn.combine import SMOTETomek
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import RobustScaler
-from typing import Optional
 
 class DataTransformation:
 

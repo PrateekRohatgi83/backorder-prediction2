@@ -45,12 +45,13 @@ class DataTransformationConfig:
     def __init__(self, training_pipeline_config: TrainingPipelineConfig):
         try:
             data_transformation_dir = os.path.join(training_pipeline_config.artifact_dir, "data_transformation")
-            self.transorm_obj_dir = os.path.join(data_transformation_dir, "transformer")      
+            self.transform_obj_dir = os.path.join(data_transformation_dir, "transformer")      
             self.transform_object_path = os.path.join(self.transform_obj_dir,TRANSFORMER_OBJECT_FILE_NAME)
             self.transform_data = os.path.join(data_transformation_dir, "transform_data")
             self.trasform_train_path = os.path.join(self.transform_data,TRAIN_FILE_NAME.replace("csv", "npz"))
             self.trasform_test_path = os.path.join(self.transform_data,TEST_FILE_NAME.replace("csv", "npz"))
             self.target_encoder_path = os.path.join(data_transformation_dir, "target_encoder", TARGET_ENCODER_OBJECT_FILE_NAME)
+            self.schema_file_path = os.path.join("schema.yaml")
         except Exception as e:
             raise BackorderException(e, sys)
 

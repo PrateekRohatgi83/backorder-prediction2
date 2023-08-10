@@ -1,5 +1,4 @@
 required_columns:
-  - sku
   - national_inv
   - in_transit_qty
   - forecast_3_month
@@ -26,5 +25,4 @@ required_columns:
 drop_columns:
   - lead_time
 
-target_column:
-  - went_on_backorder
+target_column: went_on_backorder
