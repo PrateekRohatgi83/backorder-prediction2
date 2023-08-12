@@ -1,11 +1,22 @@
-from backorder.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig, DataValidationConfig, DataTransformationConfig
-from backorder.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact, DataTransformationArtifact
+from backorder.entity.config_entity import (TrainingPipelineConfig, 
+                                            DataIngestionConfig, 
+                                            DataValidationConfig, 
+                                            DataTransformationConfig, 
+                                            ModelTrainerConfig, 
+                                            ModelEvaluationConfig)
+from backorder.entity.artifact_entity import (DataIngestionArtifact, 
+                                            DataValidationArtifact, 
+                                            DataTransformationArtifact,
+                                            ModelTrainerArtifact,
+                                            ModelEvaluationArtifact)
 from backorder.exception import BackorderException
 from backorder.logger import logging
 import os, sys
 from backorder.components.data_ingestion import DataIngestion
 from backorder.components.data_validation import DataValidation
 from backorder.components.data_transformation import DataTransformation
+from backorder.components.model_trainer import ModelTrainer
+from backorder.components.model_evaluation import ModelEvaluation
 
 class TrainingPipeline:
 
@@ -40,7 +51,7 @@ class TrainingPipeline:
         except Exception as e:
             raise BackorderException(e, sys)
 
-    def start_data_transformation(self, data_validation_artifact:DataValidationArtifact)->DataValidationArtifact:
+    def start_data_transformation(self, data_validation_artifact:DataValidationArtifact)->DataTransformationArtifact:
         try:
             data_transformation_config = DataTransformationConfig(
                 training_pipeline_config=self.training_pipeline_config)
@@ -52,16 +63,61 @@ class TrainingPipeline:
         except Exception as e:
             raise BackorderException(e, sys)
         
+    def start_model_trainer(self, data_transformation_artifact:DataTransformationArtifact)->ModelTrainerArtifact:
+        try:
+            model_trainer_config = ModelTrainerConfig(
+                training_pipeline_config=self.training_pipeline_config)
+            model_trainer = ModelTrainer(model_trainer_config=model_trainer_config, 
+            data_transformation_artifact=data_transformation_artifact) 
+
+            return model_trainer.initiate_model_trainer()
+
+        except Exception as e:
+            raise BackorderException(e, sys)
+
+    def start_model_evaluation(self, model_trainer_artifact:ModelTrainerArtifact, data_ingestion_artifact:DataIngestionArtifact, data_transformation_artifact:DataTransformationArtifact)->ModelEvaluationArtifact:
+        try:
+            data_transformation_config = DataTransformationConfig(
+                training_pipeline_config=self.training_pipeline_config)
+            model_evaluation_config = ModelEvaluationConfig(
+                training_pipeline_config=self.training_pipeline_config)
+            model_evaluation = ModelEvaluation(model_evaluation_config=model_evaluation_config, 
+            data_ingestion_artifact=data_ingestion_artifact,
+            data_transformation_artifact=data_transformation_artifact,
+            data_transformation_config=data_transformation_config,
+            model_trainer_artifact=model_trainer_artifact,
+            model_evaluation_artifact=ModelEvaluationArtifact
+            # data_transformation_config=DataTransformationConfig
+            )
+
+            # model_evaluation_artifact = model_evaluation.initiate_model_evaluation(data_transformation_config=DataTransformationConfig)
+            model_evaluation_artifact = model_evaluation.initiate_model_evaluation(data_transformation_config)
+            # return model_evaluation.initiate_model_evaluation()
+
+        except Exception as e:
+            raise BackorderException(e, sys)
 
     def start(self,):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
 
             data_validation_artifact = self.start_data_validation(
-                data_ingestion_artifact=data_ingestion_artifact)
+                data_ingestion_artifact=data_ingestion_artifact
+            )
                 
             data_transformation_artifact = self.start_data_transformation(
                 data_validation_artifact=data_validation_artifact
             )
+
+            model_trainer_artifact = self.start_model_trainer(
+                data_transformation_artifact=data_transformation_artifact
+            )
+
+            model_evaluation_artifact = self.start_model_evaluation(
+                data_ingestion_artifact=data_ingestion_artifact,
+                data_transformation_artifact=data_transformation_artifact,
+                model_trainer_artifact=model_trainer_artifact
+            )
+
         except Exception as e:
             raise BackorderException(e, sys)

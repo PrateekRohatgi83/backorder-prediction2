@@ -54,6 +54,9 @@ class DataTransformation:
             target_feature_train_df = train_df[target_column]
             target_feature_test_df = test_df[target_column]
 
+            input_feature_train_df=input_feature_train_df.replace({'Yes':1, 'No':0})
+            input_feature_test_df=input_feature_test_df.replace({'Yes':1, 'No':0})
+
             logging.info("Converting target cat column into numerical column using label encoder")
             label_encoder = LabelEncoder()
             label_encoder.fit(target_feature_train_df)
@@ -85,7 +88,7 @@ class DataTransformation:
 
             logging.info("Saving data")
             save_numpy_array_data(file_path=self.data_transformation_config.transform_train_path, array=train_arr)
-            save_numpy_array_data(file_path=self.data_transformation_config.transform_test_path, array=train_arr)
+            save_numpy_array_data(file_path=self.data_transformation_config.transform_test_path, array=test_arr)
 
             logging.info(f"Save label encoder")
             save_object(file_path=self.data_transformation_config.target_encoder_path, obj=label_encoder)
@@ -98,7 +101,7 @@ class DataTransformation:
                 transform_train_path=self.data_transformation_config.transform_train_path, 
                 transform_test_path=self.data_transformation_config.transform_test_path, 
                 target_encoder_path=self.data_transformation_config.target_encoder_path)
-            logging.info("Data transformation artifact: {data_transformation_artifact}")
+            logging.info(f"Data transformation artifact: {data_transformation_artifact}")
             return data_transformation_artifact
 
         except Exception as e:
