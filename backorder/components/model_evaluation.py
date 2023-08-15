@@ -131,7 +131,7 @@ class ModelEvaluation:
             )
 
             logging.info(f"Model evaluation artifact: {model_evaluation_artifact}")
-            # return model_evaluation_artifact
+            return model_evaluation_artifact
 
             latest_model_path = model_resolver.get_best_model_path()
             latest_model = load_object(file_path=latest_model_path)

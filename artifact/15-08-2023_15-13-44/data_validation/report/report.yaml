@@ -1,0 +1,66 @@
+test_missing_values_columns: []
+train_missing_values_columns: []
+train_test_drift:
+  deck_risk:
+    pvalues: 0.9994147789675344
+    same_distribution: true
+  forecast_3_month:
+    pvalues: 0.9746416258321418
+    same_distribution: true
+  forecast_6_month:
+    pvalues: 0.9672637145264082
+    same_distribution: true
+  forecast_9_month:
+    pvalues: 0.8686000266669345
+    same_distribution: true
+  in_transit_qty:
+    pvalues: 0.9883923111556162
+    same_distribution: true
+  local_bo_qty:
+    pvalues: 1.0
+    same_distribution: true
+  min_bank:
+    pvalues: 0.059515941021791474
+    same_distribution: true
+  national_inv:
+    pvalues: 0.8826080723357526
+    same_distribution: true
+  oe_constraint:
+    pvalues: 1.0
+    same_distribution: true
+  perf_12_month_avg:
+    pvalues: 0.12771782644865226
+    same_distribution: true
+  perf_6_month_avg:
+    pvalues: 0.47183558999547615
+    same_distribution: true
+  pieces_past_due:
+    pvalues: 1.0
+    same_distribution: true
+  potential_issue:
+    pvalues: 1.0
+    same_distribution: true
+  ppap_risk:
+    pvalues: 0.9999999993657624
+    same_distribution: true
+  rev_stop:
+    pvalues: 1.0
+    same_distribution: true
+  sales_1_month:
+    pvalues: 0.7891919977375049
+    same_distribution: true
+  sales_3_month:
+    pvalues: 0.8037260016503883
+    same_distribution: true
+  sales_6_month:
+    pvalues: 0.8526009492878215
+    same_distribution: true
+  sales_9_month:
+    pvalues: 0.9101466075742977
+    same_distribution: true
+  stop_auto_buy:
+    pvalues: 1.0
+    same_distribution: true
+  went_on_backorder:
+    pvalues: 1.0
+    same_distribution: true
