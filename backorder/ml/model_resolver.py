@@ -2,6 +2,7 @@ from backorder.exception import BackorderException
 from backorder.entity.config_entity import (TRANSFORMER_OBJECT_FILE_NAME, 
                                             MODEL_FILE_NAME, 
                                             TARGET_ENCODER_OBJECT_FILE_NAME)
+from glob import glob
 import os, sys
 from typing import Optional
 
@@ -25,7 +26,7 @@ class ModelResolver:
             dir_names = os.listdir(self.model_registry)
             if len(dir_names)==0:
                 return None
-            dir_names = list(map(int, dir_names))
+            dir_names = list(map(int,dir_names))
             latest_dir_name = max(dir_names)
             return os.path.join(self.model_registry, f"{latest_dir_name}")
         except Exception as e:
@@ -88,3 +89,30 @@ class ModelResolver:
             return os.path.join(latest_dir,self.target_encoder_dir_name,TARGET_ENCODER_OBJECT_FILE_NAME)
         except Exception as e:
             raise BackorderException(e, sys)
+
+    def get_best_model_path(self,)->str:
+        try:
+            timestamps = list(map(int,os.listdir(self.model_registry)))
+            latest_timestamp = max(timestamps)
+            latest_model_path= os.path.join(self.model_registry,f"{latest_timestamp}",MODEL_FILE_NAME)
+            return latest_model_path
+        except Exception as e:
+            raise e
+    
+    def is_model_exists(self)->bool:
+        try:
+            if not os.path.exists(self.model_registry):
+                return False
+
+            timestamps = os.listdir(self.model_registry)
+            if len(timestamps)==0:
+                return False
+            
+            latest_model_path = self.get_best_model_path()
+
+            if not os.path.exists(latest_model_path):
+                return False
+
+            return True
+        except Exception as e:
+            raise e

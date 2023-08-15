@@ -34,6 +34,9 @@ class DataIngestion:
             logging.info("removing sku column")
             df = df.drop(columns=['sku'], axis=1)
 
+            # logging.info("removing lead_time column")
+            # df = df.drop(columns=['lead_time'], axis=1)
+
             logging.info("removing duplicates")
             df = df.drop_duplicates(ignore_index=True)
 

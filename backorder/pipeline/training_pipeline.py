@@ -3,12 +3,14 @@ from backorder.entity.config_entity import (TrainingPipelineConfig,
                                             DataValidationConfig, 
                                             DataTransformationConfig, 
                                             ModelTrainerConfig, 
-                                            ModelEvaluationConfig)
+                                            ModelEvaluationConfig,
+                                            ModelPusherConfig)
 from backorder.entity.artifact_entity import (DataIngestionArtifact, 
                                             DataValidationArtifact, 
                                             DataTransformationArtifact,
                                             ModelTrainerArtifact,
-                                            ModelEvaluationArtifact)
+                                            ModelEvaluationArtifact,
+                                            ModelPusherArtifact)
 from backorder.exception import BackorderException
 from backorder.logger import logging
 import os, sys
@@ -17,6 +19,7 @@ from backorder.components.data_validation import DataValidation
 from backorder.components.data_transformation import DataTransformation
 from backorder.components.model_trainer import ModelTrainer
 from backorder.components.model_evaluation import ModelEvaluation
+from backorder.components.model_pusher import ModelPusher
 
 class TrainingPipeline:
 
@@ -75,7 +78,42 @@ class TrainingPipeline:
         except Exception as e:
             raise BackorderException(e, sys)
 
-    def start_model_evaluation(self, model_trainer_artifact:ModelTrainerArtifact, data_ingestion_artifact:DataIngestionArtifact, data_transformation_artifact:DataTransformationArtifact)->ModelEvaluationArtifact:
+    # def start_model_evaluation(self, model_trainer_artifact:ModelTrainerArtifact, data_ingestion_artifact:DataIngestionArtifact, data_transformation_artifact:DataTransformationArtifact)->ModelEvaluationArtifact:
+    #     try:
+    #         data_transformation_config = DataTransformationConfig(
+    #             training_pipeline_config=self.training_pipeline_config)
+    #         model_evaluation_config = ModelEvaluationConfig(
+    #             training_pipeline_config=self.training_pipeline_config)
+    #         model_evaluation = ModelEvaluation(model_evaluation_config=model_evaluation_config, 
+    #         data_ingestion_artifact=data_ingestion_artifact,
+    #         data_transformation_artifact=data_transformation_artifact,
+    #         data_transformation_config=data_transformation_config,
+    #         model_trainer_artifact=model_trainer_artifact,
+    #         model_evaluation_artifact=ModelEvaluationArtifact
+    #         # data_transformation_config=DataTransformationConfig
+    #         )
+
+    #         # model_evaluation_artifact = model_evaluation.initiate_model_evaluation(data_transformation_config=DataTransformationConfig)
+    #         model_evaluation_artifact = model_evaluation.initiate_model_evaluation(data_transformation_config)
+    #         # return model_evaluation.initiate_model_evaluation()
+
+    #     except Exception as e:
+    #         raise BackorderException(e, sys)
+
+    def start_model_pusher(self, model_trainer_artifact:ModelTrainerArtifact, data_transformation_artifact:DataTransformationArtifact)->ModelPusherArtifact:
+        try:
+            model_pusher_config = ModelPusherConfig(
+                training_pipeline_config=self.training_pipeline_config)
+            model_pusher = ModelPusher(model_pusher_config=model_pusher_config, 
+            data_transformation_artifact = data_transformation_artifact,
+            model_trainer_artifact=model_trainer_artifact)
+
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+
+        except Exception as e:
+            raise BackorderException(e, sys)
+
+    def start_model_evaluation(self, model_trainer_artifact:ModelTrainerArtifact, data_ingestion_artifact:DataIngestionArtifact, data_transformation_artifact:DataTransformationArtifact, data_validation_artifact:DataValidationArtifact)->ModelEvaluationArtifact:
         try:
             data_transformation_config = DataTransformationConfig(
                 training_pipeline_config=self.training_pipeline_config)
@@ -83,6 +121,7 @@ class TrainingPipeline:
                 training_pipeline_config=self.training_pipeline_config)
             model_evaluation = ModelEvaluation(model_evaluation_config=model_evaluation_config, 
             data_ingestion_artifact=data_ingestion_artifact,
+            data_validation_artifact=data_validation_artifact,
             data_transformation_artifact=data_transformation_artifact,
             data_transformation_config=data_transformation_config,
             model_trainer_artifact=model_trainer_artifact,
@@ -113,7 +152,19 @@ class TrainingPipeline:
                 data_transformation_artifact=data_transformation_artifact
             )
 
+            # model_evaluation_artifact = self.start_model_evaluation(
+            #     data_ingestion_artifact=data_ingestion_artifact,
+            #     data_transformation_artifact=data_transformation_artifact,
+            #     model_trainer_artifact=model_trainer_artifact
+            # )
+
+            model_pusher_artifact = self.start_model_pusher(
+                data_transformation_artifact = data_transformation_artifact,
+                model_trainer_artifact = model_trainer_artifact
+            )
+
             model_evaluation_artifact = self.start_model_evaluation(
+                data_validation_artifact=data_validation_artifact,
                 data_ingestion_artifact=data_ingestion_artifact,
                 data_transformation_artifact=data_transformation_artifact,
                 model_trainer_artifact=model_trainer_artifact

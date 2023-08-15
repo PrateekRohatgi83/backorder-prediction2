@@ -25,6 +25,12 @@ class DataIngestionConfig:
         except Exception as e:
             raise BackorderException(e, sys)
 
+    def to_dict(self,)->dict:
+        try:
+            return self.__dict__
+        except Exception  as e:
+            raise BackorderException(e, sys)
+
 class DataValidationConfig:
     def __init__(self, training_pipeline_config: TrainingPipelineConfig):
         try:
@@ -66,9 +72,28 @@ class ModelTrainerConfig:
         except Exception as e:
             raise BackorderException(e, sys)
 
+# class ModelEvaluationConfig:
+#     def __init__(self, training_pipeline_config:TrainingPipelineConfig):
+#         try:
+#             self.change_threshold = 0.01
+#         except Exception as e:
+#             raise BackorderException(e, sys)
+
+class ModelPusherConfig:
+    def __init__(self, training_pipeline_config: TrainingPipelineConfig):
+        self.model_pusher_dir = os.path.join(training_pipeline_config.artifact_dir, "model_pusher")
+        self.saved_model_dir = os.path.join("saved_models")
+        self.pusher_model_dir = os.path.join(self.model_pusher_dir,"saved_models")
+        self.pusher_model_path = os.path.join(self.pusher_model_dir, MODEL_FILE_NAME)
+        self.pusher_transformer_path = os.path.join(self.pusher_model_dir, TRANSFORMER_OBJECT_FILE_NAME)
+        self.pusher_target_encoder_path = os.path.join(self.pusher_model_dir, TARGET_ENCODER_OBJECT_FILE_NAME)
+
 class ModelEvaluationConfig:
     def __init__(self, training_pipeline_config:TrainingPipelineConfig):
         try:
+            self.model_evaluation_dir: str = os.path.join(
+            training_pipeline_config.artifact_dir, "model_evaluation")
             self.change_threshold = 0.01
+            self.report_file_path = os.path.join(self.model_evaluation_dir,"report.yaml")
         except Exception as e:
             raise BackorderException(e, sys)

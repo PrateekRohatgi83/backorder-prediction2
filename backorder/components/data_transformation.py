@@ -12,6 +12,7 @@ from sklearn.preprocessing import LabelEncoder
 from imblearn.combine import SMOTETomek
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import RobustScaler
+from backorder.config import TARGET_COLUMN
 
 class DataTransformation:
 
@@ -39,20 +40,20 @@ class DataTransformation:
 
     def initiate_data_transformation(self,) -> DataTransformationArtifact:
         try:
-            schema_info = read_yaml_file(file_path=self.data_transformation_config.schema_file_path)
-            target_column = schema_info["target_column"]
+            # schema_info = read_yaml_file(file_path=self.data_transformation_config.schema_file_path)
+            # target_column = schema_info["target_column"]
             #reading training and testing file
             logging.info(f"reading training and testing file")
             train_df = pd.read_csv(self.data_validation_artifact.train_file_path)
             test_df = pd.read_csv(self.data_validation_artifact.test_file_path)
 
             logging.info(f"selecting input feature for train and test dataframe")
-            input_feature_train_df=train_df.drop(target_column, axis=1)
-            input_feature_test_df=test_df.drop(target_column, axis=1)
+            input_feature_train_df=train_df.drop(TARGET_COLUMN, axis=1)
+            input_feature_test_df=test_df.drop(TARGET_COLUMN, axis=1)
 
             logging.info("selecting target feature for train and test dataframe")
-            target_feature_train_df = train_df[target_column]
-            target_feature_test_df = test_df[target_column]
+            target_feature_train_df = train_df[TARGET_COLUMN]
+            target_feature_test_df = test_df[TARGET_COLUMN]
 
             input_feature_train_df=input_feature_train_df.replace({'Yes':1, 'No':0})
             input_feature_test_df=input_feature_test_df.replace({'Yes':1, 'No':0})
