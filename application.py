@@ -11,7 +11,7 @@ import pickle
 import streamlit as st
 import os,sys
 
-loaded_model = pickle.load(open('E:/Project INEURON/backorder prediction/backorder-prediction2/trained_model.sav', 'rb'))
+loaded_model = pickle.load(open('trained_model.sav', 'rb'))
 # print(type(loaded_model))
 # sys.exit(0)
 def predict_backorder(input_data):
